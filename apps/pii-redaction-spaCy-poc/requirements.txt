@@ -1,0 +1,20 @@
+# Core server
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+websockets==12.0
+
+# NER model (PII entity detection via spaCy)
+# Install the model separately:
+#   python -m spacy download en_core_web_md
+# Or:  pip install "en_core_web_md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.8.0/en_core_web_md-3.8.0-py3-none-any.whl"
+spacy>=3.8
+
+# OpenAI Realtime API client
+openai==1.50.0
+
+# Environment config
+python-dotenv==1.0.1
+
+# Corporate SSL proxy support (reads macOS/Windows/Linux system trust store)
+# Fixes Zscaler / corporate CA interception issues.
+truststore>=0.9.1
