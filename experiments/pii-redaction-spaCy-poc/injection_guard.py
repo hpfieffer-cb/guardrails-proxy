@@ -7,14 +7,14 @@ This runs BEFORE PII redaction in the pipeline. If a message looks like a
 prompt injection, academic misuse, or unsafe content, we block it entirely
 rather than trying to clean it.
 
-EARC-mandated pre-processing layers covered:
+Pre-processing layers covered:
   Layer 1: Keyword matching / Regex / Fuzzy matching (this file)
     - Prompt injection patterns
     - Academic misuse patterns
     - Content restriction patterns (unsafe content categories)
-  Layer 2: Classical ML classifiers (future — logistic regression / SVM)
-  Layer 3: Fine-tuned encoder classifiers (future — DistilBERT / RoBERTa)
-  Layer 4: Anomaly / novelty detection (future — isolation forest)
+  Layer 2: Classical ML classifiers
+  Layer 3: Fine-tuned encoder classifiers 
+  Layer 4: Anomaly / novelty detection 
 
 Detection categories:
   1. Prompt injection — instruction overrides, role hijacking, prompt extraction

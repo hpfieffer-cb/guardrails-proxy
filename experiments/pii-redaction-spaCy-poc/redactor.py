@@ -2,30 +2,19 @@
 PII Redaction Engine
 ====================
 Two-layer PII detection:
-  1. NER model — catches context-dependent entities (names, orgs, locations)
-     Backends:
-       a. spaCy (en_core_web_md) — installs from PyPI, works behind Zscaler
+  1. NER model:
+       a. spaCy (en_core_web_md) — installs from PyPI
        b. Regex-only fallback — no model needed, misses names/orgs
-     Future: BERT (dslim/bert-base-NER) could be added for higher accuracy.
   2. Regex patterns — catches structured PII (SSN, credit cards, emails, phones,
      student IDs, driver's license, etc.)
 
-OPINION: We run BOTH layers on every message. NER is great at names but terrible
-at SSNs. Regex is great at SSNs but can't tell "Chase" the person from "Chase" the
-bank. Together they cover each other's blind spots.
-
-PII categories covered (per EARC requirements):
+PII categories covered:
   - Personal identifiers: name, email, phone, DOB
   - Government identifiers: SSN, driver's license
   - Institutional identifiers: student ID
   - Financial data: credit card numbers
   - Electronic credentials: usernames/passwords in context
   - Network identifiers: IP addresses
-
-Scaling path:
-  - POC: spaCy loaded in-process (this file)
-  - Production: Swap to AWS Comprehend detect_pii_entities() or
-    SageMaker endpoint. Everything else stays the same.
 """
 
 import os
@@ -53,11 +42,9 @@ class PIIEntity:
 # =============================================================================
 # Regex-based PII patterns
 # =============================================================================
-# Covers EARC-required PII categories:
+# Covers PII categories:
 #   Personal identifiers, government IDs, institutional IDs,
 #   financial data, electronic credentials, network identifiers.
-#
-# When you integrate SAM v3's scrubbing logic, replace or extend these.
 
 PII_PATTERNS = {
     # US Social Security Number: 123-45-6789 or 123 45 6789
@@ -114,23 +101,13 @@ PII_PATTERNS = {
     ),
 }
 
-
 # =============================================================================
 # NER backend — spaCy
 # =============================================================================
 
 class SpaCyDetector:
     """
-    NER using spaCy's en_core_web_md model.
-
-    Why spaCy instead of BERT?
-    - Installs from PyPI (pip install), not HuggingFace
-    - Works behind Zscaler/corporate proxies that block huggingface.co
-    - No GPU required, fast inference (~5ms per message)
-    - Detects PERSON, ORG, GPE/LOC out of the box
-
-    For higher accuracy, upgrade to en_core_web_trf (transformer-based):
-      pip install "en_core_web_trf @ https://github.com/explosion/spacy-models/..."
+    Using NER using spaCy's en_core_web_md model
     """
 
     LABEL_MAP = {
@@ -177,7 +154,7 @@ class PIIRedactor:
         # clean_text = "My name is [PERSON_1], SSN [SSN_1]"
         # entities = {("[PERSON_1]", "John"), ("[SSN_1]", "123-45-6789")}
 
-    OPINION: We use numbered placeholders (PERSON_1, PERSON_2) instead of a
+    OPTIONAL: We use numbered placeholders (PERSON_1, PERSON_2) instead of a
     single generic [REDACTED] tag. This lets the LLM distinguish between
     multiple entities of the same type, which matters for coherent responses.
     The placeholder map can be used for round-trip restoration if needed.
@@ -236,16 +213,12 @@ class PIIRedactor:
         Returns:
             - redacted text with placeholders
             - list of all detected entities (for logging/audit)
-
-        IMPORTANT: We process entities in reverse order by position so that
-        replacements don't shift the offsets of subsequent entities.
         """
-        # Reset counters for each message (or remove this to maintain
-        # consistent numbering across a conversation — your call)
+        # Reset counters for each message
         self._counters = {}
         self.placeholder_map = {}
 
-        # Layer 1: NER (names, orgs, locations) -- skip if unavailable
+        # Layer 1: NER (names, orgs, locations)
         ner_entities = self.ner.detect(text) if self.ner else []
 
         # Layer 2: Regex (SSNs, credit cards, emails, phones, etc.)

@@ -81,11 +81,11 @@ def _print_metrics(tp, fp, tn, fn, label):
     print(f"  {'Actual + (real)':>20} {GREEN}TP = {tp:>3}{RESET}       {RED}FN = {fn:>3}{RESET}")
     print(f"  {'Actual - (benign)':>20} {YELLOW}FP = {fp:>3}{RESET}       {GREEN}TN = {tn:>3}{RESET}")
     print()
-    print(f"  {BOLD}Precision:{RESET}  {precision:.1%}  {DIM}(of everything flagged, how much was real){RESET}")
-    print(f"  {BOLD}Recall:{RESET}     {recall:.1%}  {DIM}(of everything real, how much was caught){RESET}")
+    print(f"  {BOLD}Precision:{RESET}  {precision:.1%}  {DIM}")
+    print(f"  {BOLD}Recall:{RESET}     {recall:.1%}  {DIM}")
     print(f"  {BOLD}F1 Score:{RESET}   {f1:.1%}")
     print(f"  {BOLD}Accuracy:{RESET}   {accuracy:.1%}  ({tp + tn}/{total} correct)")
-    print(f"  {BOLD}FP Rate:{RESET}    {fpr:.1%}  {DIM}(benign messages incorrectly flagged){RESET}")
+    print(f"  {BOLD}FP Rate:{RESET}    {fpr:.1%}  {DIM}")
 
     return {"tp": tp, "fp": fp, "tn": tn, "fn": fn,
             "precision": precision, "recall": recall, "f1": f1, "accuracy": accuracy, "fpr": fpr}
