@@ -41,9 +41,18 @@ Each sample includes fields for both evaluation engines:
 | `category` | spaCy | Threat type (injection, academic_misuse, unsafe_content, etc.) |
 | `description` | Both | Human-readable label |
 
-## Source of Truth
+### Synthetic Evaluation Dataset (97 samples)
 
-The Bedrock Guardrails dataset is the primary source. Additional samples from the spaCy POC extend coverage for:
-- PII types only the spaCy regex patterns detect (DOB, student ID, driver's license, credentials, account numbers)
-- Threat categories beyond injection (academic misuse, content safety)
-- Education-context false-positive traps
+| Category | Positives (Should Trigger) | Negatives (Benign) | Total |
+|---|---|---|---|
+| **PII Detection** | 26 | 22 | 48 |
+| **Injection / Guard Detection** | 25 *(23 blocked + 2 suspicious)* | 24 | 49 |
+| **TOTAL** | **51** | **46** | **97** |
+
+### Visual Summary
+
+| Type | Count |
+|---|---|
+| Total Samples | **97** |
+| Total Positives | **51** |
+| Total Negatives | **46** |

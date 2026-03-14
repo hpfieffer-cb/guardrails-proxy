@@ -1,10 +1,8 @@
 """
 Shared Synthetic Evaluation Dataset
 =====================================
-Canonical dataset used by BOTH the Bedrock Guardrails POC and spaCy POC
-evaluation suites. Guardrail data is the source of truth; additional
-samples from the spaCy POC extend coverage for PII types and threat
-categories that only the spaCy pipeline detects.
+Canonical dataset used by BOTH the Bedrock Guardrails and spaCy
+evaluation suites. 
 
 ~97 labeled samples for estimating TP/FP block rates across:
   - PII detection (Bedrock Guardrails / spaCy NER + regex)

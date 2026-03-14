@@ -1,4 +1,4 @@
-# PII Redaction Proxy — Bedrock Guardrails v1.1
+# Amazon Bedrock Guardrails Proxy
 
 A WebSocket proxy that sits between your client and OpenAI's Realtime API, using **AWS Bedrock Guardrails** for PII anonymization and prompt injection detection in a single managed API call.
 
