@@ -22,6 +22,10 @@ build/
 # macOS
 .DS_Store
 
+# Logs
+logs/
+*.log
+
 # Editors and IDEs
 .vscode/
 .idea/

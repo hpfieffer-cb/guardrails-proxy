@@ -9,6 +9,10 @@ Every message passes through two security layers before reaching the LLM:
 
 On the return path (LLM -> user), placeholders are restored to original values
 so the user sees a natural response.
+
+Note: OpenAI forwarding is not currently active. The server runs in dry-run
+mode by default — messages are processed through the security layers but not
+forwarded to the OpenAI Realtime API.
 """
 
 import os
@@ -16,6 +20,7 @@ import ssl
 import json
 import asyncio
 import logging
+import pathlib
 from contextlib import asynccontextmanager
 
 import certifi
@@ -44,9 +49,17 @@ LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 # but don't forward to OpenAI. Perfect for demos and testing.
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() in ("true", "1", "yes")
 
+# Ensure logs/ directory exists
+_log_dir = pathlib.Path(__file__).resolve().parent / "logs"
+_log_dir.mkdir(exist_ok=True)
+
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL),
     format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(_log_dir / "proxy.log"),
+    ],
 )
 logger = logging.getLogger("proxy")
 

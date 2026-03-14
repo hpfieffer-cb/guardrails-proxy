@@ -16,9 +16,21 @@ Usage:
 import argparse
 import logging
 import os
+import pathlib
 import sys
 
-logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
+# Ensure logs/ directory exists
+_log_dir = pathlib.Path(__file__).resolve().parent / "logs"
+_log_dir.mkdir(exist_ok=True)
+
+logging.basicConfig(
+    level=logging.WARNING,
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(_log_dir / "eval.log"),
+    ],
+)
 
 # Import shared dataset from /datasets
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "datasets"))
