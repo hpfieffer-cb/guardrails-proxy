@@ -50,13 +50,15 @@ pip install -r requirements.txt
 
 # 2. Configure
 cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY
 
 # 3. Run offline tests (no API key or server needed)
 python tests/test_client.py --suite offline
 
-# 4. Run the evaluation suite (75 labeled samples, prints TP/FP/TN/FN report)
+# 4. Run the eval summary
 python eval_tpfp.py
+
+# Verbose: see every sample's result (TP/FP/TN/FN)
+python eval_tpfp.py --verbose
 
 # 5. Start the server
 uvicorn server:app --host 0.0.0.0 --port 8000
