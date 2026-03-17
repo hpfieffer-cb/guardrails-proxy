@@ -54,7 +54,7 @@ A WebSocket proxy that sits between your client and OpenAI's Realtime API, using
 
 ```bash
 cd pii-redaction-poc-v1.1
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 cp .env.example .env
 # Edit .env: paste GUARDRAIL_ID, set AWS_REGION, add OPENAI_API_KEY
 
@@ -73,11 +73,11 @@ aws bedrock get-guardrail --guardrail-identifier your-guardrail-id
 
 ```bash
 # Terminal 1: Start the server
-python3 -m uvicorn server:app --host 0.0.0.0 --port 8000
+python -m uvicorn server:app --host 0.0.0.0 --port 8000
 
 # Terminal 2: run the TP/FP evaluation (40 PII + 35 injection = 75 samples)
-python3 eval_tpfp.py           # summary only
-python3 eval_tpfp.py --verbose # show every sample result
+python eval_tpfp.py           # summary only
+python eval_tpfp.py --verbose # show every sample result
 ```
 
 ---
@@ -166,10 +166,10 @@ The negative samples are deliberately tricky — they include words like "ignore
 
 ```bash
 # Summary only
-python3 eval_tpfp.py
+python eval_tpfp.py
 
 # Verbose: see every sample's result (TP/FP/TN/FN)
-python3 eval_tpfp.py --verbose
+python eval_tpfp.py --verbose
 ```
 
 ### Example output
