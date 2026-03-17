@@ -2,7 +2,7 @@
 Test Client for PII Redaction Proxy
 ====================================
 Sends test messages through the proxy to demonstrate PII redaction
-and prompt injection blocking. Great for demos.
+and prompt injection blocking.
 
 Usage:
   # Start the server first (dry-run mode — no API key needed):

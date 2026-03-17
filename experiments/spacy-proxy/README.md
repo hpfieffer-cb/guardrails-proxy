@@ -58,8 +58,6 @@ brew install uv
 
 # create virtual environment and install dependencies (includes spaCy + NER model)
 uv venv
-source .venv/bin/activate
-
 uv pip install -r requirements.txt
 
 # Configure

@@ -64,8 +64,6 @@ brew install uv
 
 # create virtual environment and install dependencies
 uv venv
-source .venv/bin/activate
-
 uv pip install -r requirements.txt
 
 # Create a copy of .env.example and edit .env: paste GUARDRAIL_ID, set AWS_REGION, add OPENAI_API_KEY
