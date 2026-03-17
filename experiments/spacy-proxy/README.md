@@ -45,38 +45,40 @@ WebSocket is server-centric — your server controls the connection, giving you 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies (includes spaCy + NER model)
-pip install -r requirements.txt
 
-# 2. Configure
+cd experiments/amazon-guardrails-proxy
+
+# check uv is installed
+uv --version
+which uv
+
+# if not, install it 
+curl -Ls https://astral.sh/uv/install.sh | sh
+brew install uv
+
+# create virtual environment and install dependencies (includes spaCy + NER model)
+uv venv
+source .venv/bin/activate
+
+uv pip install -r requirements.txt
+
+# Configure
 cp .env.example .env
 
-# 3. Run offline tests (no API key or server needed)
+# Run offline tests (no API key or server needed)
 python tests/test_client.py --suite offline
 
-# 4. Run the eval summary
+# Run the eval summary
 python eval_tpfp.py
 
 # Verbose: see every sample's result (TP/FP/TN/FN)
 python eval_tpfp.py --verbose
 
-# 5. Start the server
+# Start the server
 uvicorn server:app --host 0.0.0.0 --port 8000
 
 # 6. Run live tests (requires server + API key)
 python tests/test_client.py --suite live
-```
-
-### NER Backend Selection
-
-The `NER_BACKEND` environment variable controls which NER model is used:
-
-```bash
-# spaCy (default) — no GPU needed
-python eval_tpfp.py
-
-# Regex-only — no model needed, misses names/orgs/locations
-NER_BACKEND=none python eval_tpfp.py
 ```
 
 ## Files
