@@ -53,15 +53,28 @@ A WebSocket proxy that sits between your client and OpenAI's Realtime API, using
 ### Step 2: Install and Configure
 
 ```bash
-cd pii-redaction-poc-v1.1
-pip install -r requirements.txt
+cd experiments/amazon-guardrails-proxy
+# check uv is installed
+uv --version
+which uv
+
+# if not, install it 
+curl -Ls https://astral.sh/uv/install.sh | sh
+brew install uv
+
+# create virtual environment and install dependencies
+uv venv
+source .venv/bin/activate
+
+uv pip install -r requirements.txt
+
+# Create a copy of .env.example and edit .env: paste GUARDRAIL_ID, set AWS_REGION, add OPENAI_API_KEY
 cp .env.example .env
-# Edit .env: paste GUARDRAIL_ID, set AWS_REGION, add OPENAI_API_KEY
 
 # Check AWS_PROFILE 
 aws sts get-caller-identity  
 
-# To check Guardrail ID
+# To check Guardrail ID and update .env file with ID
 aws bedrock list-guardrails --query 'guardrails[].id' --output text
 
 # To see Bedrock Guardrail Config
